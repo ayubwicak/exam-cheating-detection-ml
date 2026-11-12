@@ -67,15 +67,19 @@ def generate_exam_data(n_samples=4000, is_test=False):
 train_df = generate_exam_data(n_samples=3500, is_test=False)
 test_df = generate_exam_data(n_samples=1500, is_test=True)
 
-train_df.to_csv("/home/ayubw/projects/mlc-cheating-detection/data/train.csv", index=False)
-test_df.to_csv("/home/ayubw/projects/mlc-cheating-detection/data/test.csv", index=False)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
+
+train_df.to_csv(os.path.join(DATA_DIR, "train.csv"), index=False)
+test_df.to_csv(os.path.join(DATA_DIR, "test.csv"), index=False)
 
 # Sample submission
 sample_sub = pd.DataFrame({
     "student_id": test_df["student_id"],
     "is_cheating": 0
 })
-sample_sub.to_csv("/home/ayubw/projects/mlc-cheating-detection/data/sample_submission.csv", index=False)
+sample_sub.to_csv(os.path.join(DATA_DIR, "sample_submission.csv"), index=False)
 
 print(f"Data Berhasil Dibuat!")
 print(f"Train Shape: {train_df.shape}, Distribusi Target: {dict(train_df['is_cheating'].value_counts())}")

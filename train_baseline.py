@@ -15,8 +15,9 @@ from lightgbm import LGBMClassifier
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 
-DATA_DIR = "/home/ayubw/projects/mlc-cheating-detection/data"
-OUTPUT_DIR = "/home/ayubw/projects/mlc-cheating-detection/output"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # 2. Load Data

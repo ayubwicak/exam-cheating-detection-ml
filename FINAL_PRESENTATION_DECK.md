@@ -1,6 +1,6 @@
-# 🎯 RANCANGAN SLIDE PRESENTASI BABAK FINAL (10 MENIT)
-**Kompetisi:** Machine Learning Competition - Data Slayer 4.0  
-**Subtema:** *"Honest Score, Equal Chance: Exam Cheating Detection"*  
+# 🎯 RANCANGAN SLIDE PRESENTASI PROYEK (10 MENIT)
+**Topik:** AI-Powered Online Exam Cheating Detection (CBT Anomaly Detection)  
+**Tujuan:** Presentasi Studi Kasus / Project Showcase Data Science  
 **Alokasi Waktu:** 10 Menit Presentasi + 15 Menit Tanya Jawab (Q&A)
 
 ---

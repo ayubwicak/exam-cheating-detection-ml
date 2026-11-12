@@ -1,6 +1,6 @@
 # 📄 LAPORAN TEKNIS (TECHNICAL REPORT)
-### Data Slayer 4.0: Machine Learning Competition
-**Subtema:** *"Honest Score, Equal Chance: Exam Cheating Detection"*
+### Machine Learning Project: Online Exam Anomaly & Cheating Detection
+**Domain:** Academic Integrity & Educational Telemetry (SDGs 4: Quality Education)
 
 ---
 
