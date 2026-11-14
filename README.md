@@ -98,6 +98,9 @@ exam-cheating-detection-ml/
    ```bash
    code notebooks/01_cheating_detection_solution.ipynb
    ```
+
+   Notebook disimpan tanpa output eksekusi agar ukuran repo tetap ringan.
+   Jalankan ulang sel dari atas untuk melihat tabel dan plot.
 4. Jalankan turnamen multi-model (opsional, tetapi disarankan):
    ```bash
    python -m src.train --models all --feature-sets A,B,C
