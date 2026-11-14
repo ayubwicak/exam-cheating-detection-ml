@@ -48,6 +48,12 @@ Eksperimen bertahap menunjukkan peningkatan performa signifikan:
 | **Model B (+ Ide 1: Speedrun)** | 0.9929 | 85.52% | Penambahan rasio nilai |
 | **Model C (+ Ide 1 & 2: Joki)** | **0.9941** | **87.74%** | **Model Final (+1.95% F1)** |
 
+> **Catatan:** angka di atas dihitung pada threshold `0.5` dan dataset
+> sintetis yang labelnya diturunkan dari fitur yang sama. Pada repeated CV
+> dan threshold tuning, Logistic Regression pada fitur mentah unggul di
+> PR-AUC/F1, sedangkan LightGBM Model C unggul di ROC-AUC. Lihat
+> `MODELING_GUIDE.md` untuk perbandingan dan batasan evaluasi.
+
 ---
 
 ## 6. Interpretasi Model & Rekomendasi

@@ -42,6 +42,13 @@ Seluruh model dievaluasi secara ketat menggunakan **5-Fold Stratified Cross-Vali
 | **Model B** | Baseline + **Ide 1 (Speedrun Cheat)** | `0.9929` | `85.52%` | Fokus pada rasio waktu & nilai |
 | **Model C** | Baseline + **Ide 1 & Ide 2 (Joki Remote)** | **`0.9941`** | **`87.74%`** | **Model Terbaik (+1.95% F1-Score)** 🚀 |
 
+> **Catatan metodologis:** F1 pada tabel di atas dihitung pada threshold
+> default `0.5`. Pada repeated CV dan threshold tuning, Logistic
+> Regression dengan fitur mentah justru unggul di PR-AUC/F1, sedangkan
+> LightGBM Model C unggul di ROC-AUC. Artinya, pemilihan "model terbaik"
+> sangat bergantung pada metrik dan threshold. Detail eksperimen ada di
+> [`MODELING_GUIDE.md`](MODELING_GUIDE.md).
+
 ---
 
 ## 📂 Struktur Proyek
@@ -53,6 +60,13 @@ exam-cheating-detection-ml/
 │   └── sample_submission.csv    # Format acuan prediksi
 ├── notebooks/
 │   └── 01_cheating_detection_solution.ipynb  # Notebook eksplorasi & eksperimen interaktif
+├── src/
+│   ├── config.py                # Path, seed, dan konstanta global
+│   ├── features.py              # Feature engineering + definisi feature set A/B/C
+│   ├── models.py                # Registry model (tambah model via decorator)
+│   ├── evaluation.py            # Repeated CV, threshold tuning, metrik, bootstrap
+│   ├── train.py                 # Turnamen model via CLI
+│   └── predict.py               # Inference dari bundle model
 ├── output/
 │   ├── final_exam_cheating_model.pkl         # Model biner ensemble tersimpan (.pkl)
 │   └── submission_final.csv                  # Hasil prediksi data uji
@@ -60,6 +74,8 @@ exam-cheating-detection-ml/
 ├── train_baseline.py            # Script pipeline pelatihan otomatis
 ├── FINAL_PRESENTATION_DECK.md   # Panduan slide presentasi proyek (Pitch Deck 10 Menit)
 ├── TECHNICAL_REPORT.md          # Draf laporan teknis metodologi
+├── MODELING_GUIDE.md            # Panduan eksperimen, tuning, dan menambah model
+├── requirements.txt             # Dependensi Python
 ├── .gitignore                   # Konfigurasi file terabaikan Git
 └── README.md                    # Dokumentasi portofolio profesional
 ```
@@ -76,9 +92,29 @@ exam-cheating-detection-ml/
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
-   pip install numpy pandas scikit-learn lightgbm matplotlib seaborn joblib ipykernel
+   pip install -r requirements.txt
    ```
 3. Jalankan notebook interaktif di VS Code / Jupyter:
    ```bash
    code notebooks/01_cheating_detection_solution.ipynb
    ```
+4. Jalankan turnamen multi-model (opsional, tetapi disarankan):
+   ```bash
+   python -m src.train --models all --feature-sets A,B,C
+   ```
+
+   Perintah di atas membandingkan beberapa algoritma dan feature set dengan
+   Stratified K-Fold dan threshold tuning. Untuk repeated CV + confidence
+   interval, gunakan model yang lebih ringan agar tidak terlalu lama:
+   ```bash
+   python -m src.train --models logreg,hist_gb,lightgbm,xgboost \
+     --feature-sets A,B,C --repeats 3 --bootstrap 200
+   ```
+   Hasilnya disimpan di `output/tournament_results.csv`,
+   `output/best_model_bundle.pkl`, dan `output/submission_tournament.csv`.
+   Panduan lengkap untuk tuning dan menambah model ada di
+   [`MODELING_GUIDE.md`](MODELING_GUIDE.md).
+
+> **Catatan:** dataset pada repositori ini adalah data simulasi. Skor
+> ROC-AUC yang sangat tinggi mencerminkan aturan generator yang dapat
+> dipelajari model, bukan performa dunia nyata.
