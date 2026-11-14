@@ -3,3 +3,7 @@
 # ukurannya jauh lebih besar dari kode Python; tandai sebagai generated agar
 # tidak mendominasi statistik bahasa repository.
 *.ipynb linguist-generated=true
+
+# Kecualikan notebook ringkasan agar tetap muncul sebagai Jupyter Notebook
+# di statistik bahasa, tanpa mengubah notebook solusi yang asli.
+notebooks/02_portfolio_overview.ipynb -linguist-generated

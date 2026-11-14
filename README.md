@@ -52,7 +52,8 @@ exam-cheating-detection-ml/
 │   ├── test.csv                 # Data log uji (1.500 sampel tanpa label)
 │   └── sample_submission.csv    # Format acuan prediksi
 ├── notebooks/
-│   └── 01_cheating_detection_solution.ipynb  # Notebook eksplorasi & eksperimen interaktif
+│   ├── 01_cheating_detection_solution.ipynb  # Notebook eksplorasi & eksperimen interaktif
+│   └── 02_portfolio_overview.ipynb           # Ringkasan proyek untuk portofolio
 ├── output/
 │   ├── final_exam_cheating_model.pkl         # Model biner ensemble tersimpan (.pkl)
 │   └── submission_final.csv                  # Hasil prediksi data uji
