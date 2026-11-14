@@ -1,0 +1,5 @@
+# Notebook menyimpan output eksekusi (tabel HTML & plot) sehingga ukurannya
+# jauh lebih besar daripada kode Python. Tandai sebagai generated agar tidak
+# mendominasi statistik bahasa GitHub; kode utama tetap terlihat dari src/*.py.
+# linguist-generated juga menyembunyikan diff notebook secara default.
+*.ipynb linguist-generated=true
