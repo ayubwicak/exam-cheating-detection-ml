@@ -1,0 +1,5 @@
+# File metadata GitHub Linguist. Tidak mengubah isi notebook, model, atau
+# submission. Notebook berisi output eksekusi (tabel & plot) sehingga
+# ukurannya jauh lebih besar dari kode Python; tandai sebagai generated agar
+# tidak mendominasi statistik bahasa repository.
+*.ipynb linguist-generated=true
