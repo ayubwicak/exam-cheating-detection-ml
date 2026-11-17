@@ -1,5 +1,9 @@
-# Notebook menyimpan output eksekusi (tabel HTML & plot) sehingga ukurannya
-# jauh lebih besar daripada kode Python. Tandai sebagai generated agar tidak
-# mendominasi statistik bahasa GitHub; kode utama tetap terlihat dari src/*.py.
-# linguist-generated juga menyembunyikan diff notebook secara default.
+# File metadata GitHub Linguist. Tidak mengubah isi notebook, model, atau
+# submission. Notebook berisi output eksekusi (tabel & plot) sehingga
+# ukurannya jauh lebih besar dari kode Python; tandai sebagai generated agar
+# tidak mendominasi statistik bahasa repository.
 *.ipynb linguist-generated=true
+
+# Kecualikan notebook ringkasan agar tetap muncul sebagai Jupyter Notebook
+# di statistik bahasa, tanpa mengubah notebook solusi yang asli.
+notebooks/02_portfolio_overview.ipynb -linguist-generated
