@@ -1,0 +1,30 @@
+{
+  "model": "logreg",
+  "feature_set": "A",
+  "n_features": 8,
+  "roc_auc": 0.989813,
+  "pr_auc": 0.971908,
+  "f1_at_0.5": 0.831106,
+  "best_f1": 0.921512,
+  "best_threshold": 0.8084,
+  "precision": 0.932353,
+  "recall": 0.91092,
+  "brier": 0.028887,
+  "log_loss": 0.100877,
+  "fold_auc_mean": 0.990591,
+  "fold_auc_std": 0.006525,
+  "confusion": [
+    [
+      3129,
+      23
+    ],
+    [
+      31,
+      317
+    ]
+  ],
+  "n_repeats": 1,
+  "roc_auc_std": 0.0,
+  "pr_auc_std": 0.0,
+  "best_f1_std": 0.0
+}
