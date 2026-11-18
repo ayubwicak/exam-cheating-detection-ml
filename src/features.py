@@ -35,15 +35,23 @@ JOKI_FEATURES = [
     "is_suspicious_joki",
 ]
 
-# Interaksi tambahan.
+# Interaksi aktivitas dasar.
 ACTIVITY_FEATURES = [
     "activity_anomaly",
+]
+
+# Ide 3: Sindikat jawaban / Peer Collusion & Behavioral Discrepancy.
+COLLUSION_FEATURES = [
+    "sim_tab_interaction",
+    "sim_copy_interaction",
+    "collusion_anomaly",
 ]
 
 FEATURE_SETS: dict[str, tuple[str, ...]] = {
     "A": tuple(BASE_FEATURES),
     "B": tuple(BASE_FEATURES + SPEED_FEATURES),
     "C": tuple(BASE_FEATURES + SPEED_FEATURES + JOKI_FEATURES + ACTIVITY_FEATURES),
+    "D": tuple(BASE_FEATURES + SPEED_FEATURES + JOKI_FEATURES + ACTIVITY_FEATURES + COLLUSION_FEATURES),
 }
 
 
@@ -73,11 +81,18 @@ def add_domain_features(df: pd.DataFrame) -> pd.DataFrame:
     copy_paste = out["copy_paste_count"].fillna(0)
     out["activity_anomaly"] = tab_switches * copy_paste
 
+    # Ide 3: Kolusi Jawaban & Anomali Pasif Kursor
+    sim = out["similarity_with_peers"].fillna(out["similarity_with_peers"].median())
+    mouse = out["mouse_movement_entropy"].fillna(out["mouse_movement_entropy"].median())
+    out["sim_tab_interaction"] = sim * tab_switches
+    out["sim_copy_interaction"] = sim * copy_paste
+    out["collusion_anomaly"] = sim * (1.0 - mouse)
+
     return out
 
 
 def get_feature_columns(feature_set: str) -> list[str]:
-    """Kembalikan daftar kolom untuk nama feature set (A/B/C)."""
+    """Kembalikan daftar kolom untuk nama feature set (A/B/C/D)."""
     key = feature_set.upper()
     if key not in FEATURE_SETS:
         valid = ", ".join(sorted(FEATURE_SETS))

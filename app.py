@@ -66,12 +66,13 @@ model_choice = st.sidebar.selectbox(
 feature_choice = st.sidebar.selectbox(
     "Pilihan Feature Set",
     options=[
-        "C (Lengkap: Baseline + Speedrun + Joki)",
+        "D (Terlengkap: Baseline + Speedrun + Joki + Collusion Interaksi)",
+        "C (Baseline + Speedrun + Joki)",
         "B (+ Speedrun Anomaly)",
         "A (Baseline Mentah)"
     ],
     index=0,
-    help="Feature Set C mencakup interaksi telemetri speedrun, pergantian IP, dan duplikasi clipboard.",
+    help="Feature Set D menambahkan interaksi kolusi kemiripan rekan dengan clipboard dan tab switch.",
 )
 fset_key = feature_choice[0]
 

@@ -22,7 +22,7 @@ from .models import make_model
 
 def explain_model_shap(
     model_name: str = "lightgbm",
-    feature_set: str = "C",
+    feature_set: str = "D",
     sample_size: int = 500,
     output_dir: Path | str = OUTPUT_DIR,
 ) -> dict:
