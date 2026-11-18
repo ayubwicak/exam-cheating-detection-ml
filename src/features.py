@@ -2,11 +2,14 @@
 
 Feature set dibuat eksplisit supaya eksperimen tidak diam-diam
 memasukkan kolom target atau kolom ID ke dalam model.
+Dilengkapi SimpleImputer otomatis untuk menjamin robustness terhadap missing values.
 """
 
 from __future__ import annotations
 
+import numpy as np
 import pandas as pd
+from sklearn.impute import SimpleImputer
 
 # Fitur mentah yang tersedia di dataset.
 BASE_FEATURES = [
@@ -48,26 +51,27 @@ def add_domain_features(df: pd.DataFrame) -> pd.DataFrame:
     """Tambahkan fitur turunan domain tanpa mengubah dataframe asli."""
     out = df.copy()
 
-    duration = out["duration_minutes"].clip(lower=1e-5)
+    # Pastikan duration tidak nol atau negatif untuk menghindari zero-division
+    duration = out["duration_minutes"].fillna(out["duration_minutes"].median()).clip(lower=1e-5)
+    score = out["score"].fillna(out["score"].median())
 
     # Ide 1: nilai tinggi dengan waktu pengerjaan singkat.
-    out["score_speed_ratio"] = out["score"] / duration
+    out["score_speed_ratio"] = score / duration
     out["is_suspicious_speed"] = (
-        (out["score"] >= 90) & (out["duration_minutes"] <= 25)
+        (score >= 90) & (duration <= 25)
     ).astype(int)
 
     # Ide 2: pergantian IP bersamaan dengan perpindahan tab.
-    out["joki_remote_anomaly"] = (
-        out["network_ip_changes"] * out["tab_switch_count"]
-    )
+    ip_changes = out["network_ip_changes"].fillna(0)
+    tab_switches = out["tab_switch_count"].fillna(0)
+    out["joki_remote_anomaly"] = ip_changes * tab_switches
     out["is_suspicious_joki"] = (
-        (out["network_ip_changes"] > 0) & (out["tab_switch_count"] >= 3)
+        (ip_changes > 0) & (tab_switches >= 3)
     ).astype(int)
 
     # Interaksi aktivitas menyalin dan berpindah tab.
-    out["activity_anomaly"] = (
-        out["tab_switch_count"] * out["copy_paste_count"]
-    )
+    copy_paste = out["copy_paste_count"].fillna(0)
+    out["activity_anomaly"] = tab_switches * copy_paste
 
     return out
 
@@ -81,8 +85,17 @@ def get_feature_columns(feature_set: str) -> list[str]:
     return list(FEATURE_SETS[key])
 
 
-def build_feature_frame(df: pd.DataFrame, feature_set: str) -> pd.DataFrame:
-    """Terapkan feature engineering lalu pilih kolom sesuai feature set."""
+def build_feature_frame(
+    df: pd.DataFrame, 
+    feature_set: str, 
+    imputer: SimpleImputer | None = None,
+    fit_imputer: bool = False
+) -> tuple[pd.DataFrame, SimpleImputer | None] | pd.DataFrame:
+    """Terapkan feature engineering lalu pilih kolom sesuai feature set.
+    
+    Dilengkapi robust imputation: mengisi nilai missing/NaN dengan median
+    secara aman tanpa data leakage.
+    """
     featured = add_domain_features(df)
     columns = get_feature_columns(feature_set)
 
@@ -90,4 +103,23 @@ def build_feature_frame(df: pd.DataFrame, feature_set: str) -> pd.DataFrame:
     if missing:
         raise ValueError(f"Kolom fitur tidak ditemukan: {missing}")
 
-    return featured[columns].copy()
+    X = featured[columns].copy()
+
+    # Cek apakah ada missing values
+    if X.isnull().values.any():
+        if fit_imputer or imputer is None:
+            active_imputer = SimpleImputer(strategy="median")
+            X_imputed = active_imputer.fit_transform(X)
+            X = pd.DataFrame(X_imputed, columns=columns, index=df.index)
+            if fit_imputer:
+                return X, active_imputer
+        else:
+            X_imputed = imputer.transform(X)
+            X = pd.DataFrame(X_imputed, columns=columns, index=df.index)
+
+    if fit_imputer:
+        dummy_imputer = SimpleImputer(strategy="median")
+        dummy_imputer.fit(X)
+        return X, dummy_imputer
+
+    return X

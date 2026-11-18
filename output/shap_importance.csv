@@ -1,0 +1,14 @@
+feature,mean_abs_shap
+similarity_with_peers,1.3921390913315137
+network_ip_changes,1.028507262196989
+activity_anomaly,0.5641667514121086
+joki_remote_anomaly,0.5475058801693091
+mouse_movement_entropy,0.3942094719955856
+copy_paste_count,0.35316285218100374
+tab_switch_count,0.34793742789637844
+score,0.13592073797640297
+duration_minutes,0.09735400756889158
+score_speed_ratio,0.07347369127458238
+avg_time_per_question,0.03656215203031484
+is_suspicious_joki,0.0014621545437066036
+is_suspicious_speed,0.0
